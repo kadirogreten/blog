@@ -58,11 +58,19 @@ class Post(models.Model, HitCountMixin):
                                         related_query_name='hit_count_generic_relation')
     product_image = models.ImageField(
         verbose_name="Post Resmi", name="post_image")
+    reels_video = models.FileField(
+        verbose_name="Video Reels", name="reels_video", null=True)
     detail = RichTextUploadingField(verbose_name="Post Detayı")
     created_at = models.DateTimeField(
         verbose_name="Oluşturulma Zamanı", auto_now_add=True)
     IsShowHome = models.BooleanField(
         verbose_name="Anasayfada Göster", default=False)
+    IsShowTopSlider = models.BooleanField(
+        verbose_name="Anasayfada Üst Slider Göster", default=False)
+    IsShowMidSlider = models.BooleanField(
+        verbose_name="Anasayfada Orta Slider Göster", default=False)
+    IsReelsVideo = models.BooleanField(
+        verbose_name="Reels Göster", default=False)
 
     def __str__(self):
         return self.title
