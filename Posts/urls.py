@@ -22,7 +22,7 @@ app_name = 'posts'
 urlpatterns = [
     url(r'^posts/$', post_list, name='posts'),
     url(r'^(?P<slug>[\w-]+)/$',
-        post_list, name='category_detail'),
+        category_list, name='category_detail'),
     url(r'^posts/(?P<slug>[\w-]+)/$',
         post_detail, name='post_detail'),
 ]

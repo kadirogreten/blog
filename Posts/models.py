@@ -8,6 +8,28 @@ from hitcount.models import HitCountMixin, HitCount
 from django.contrib.contenttypes.fields import GenericRelation
 
 # Create your models here.
+POST_TYPE_CHOICES = (
+    ('R', 'Reels'),
+    ('P', 'Post'),
+    ('S', 'Story'),
+    ('O', 'Diğer'),
+
+)
+
+
+class PostTags(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Post Başlığı")
+    row = models.IntegerField(
+        unique=True, editable=True, verbose_name="Etiket Sırası")
+    created_at = models.DateTimeField(
+        verbose_name="Oluşturulma Zamanı", auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-created_at', 'id']
+        verbose_name_plural = "Post Etiketleri"
 
 
 class PostCategory(models.Model):
@@ -18,6 +40,10 @@ class PostCategory(models.Model):
         unique=True, verbose_name="Post Kategorisi urlsi", max_length=250, editable=False)
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk',
                                         related_query_name='hit_count_generic_relation')
+    IsShowMenu = models.BooleanField(
+        verbose_name="Menüde Göster", default=False)
+    IsShowHome = models.BooleanField(
+        verbose_name="Anasayfada Göster", default=False)
     created_at = models.DateTimeField(
         verbose_name="Oluşturulma Zamanı", auto_now_add=True)
 
@@ -48,6 +74,8 @@ class PostCategory(models.Model):
 class Post(models.Model, HitCountMixin):
     categories = models.ManyToManyField(
         PostCategory, verbose_name="Kategori Seç", related_name="post")
+    tags = models.ManyToManyField(
+        PostTags, verbose_name="Etiket Seç", related_name="post")
     title = models.CharField(max_length=200, verbose_name="Post Başlığı")
     slug = models.SlugField(
         unique=True, verbose_name="Post urlsi", max_length=350, editable=False)
@@ -59,18 +87,18 @@ class Post(models.Model, HitCountMixin):
     product_image = models.ImageField(
         verbose_name="Post Resmi", name="post_image")
     reels_video = models.FileField(
-        verbose_name="Video Reels", name="reels_video", null=True)
+        verbose_name="Video Reels", name="reels_video", blank=True)
     detail = RichTextUploadingField(verbose_name="Post Detayı")
     created_at = models.DateTimeField(
         verbose_name="Oluşturulma Zamanı", auto_now_add=True)
     IsShowHome = models.BooleanField(
-        verbose_name="Anasayfada Göster", default=False)
+        verbose_name="Banner Slider Göster", default=False)
     IsShowTopSlider = models.BooleanField(
         verbose_name="Anasayfada Üst Slider Göster", default=False)
     IsShowMidSlider = models.BooleanField(
         verbose_name="Anasayfada Orta Slider Göster", default=False)
-    IsReelsVideo = models.BooleanField(
-        verbose_name="Reels Göster", default=False)
+    post_type = models.CharField(
+        max_length=1, choices=POST_TYPE_CHOICES, default='O')
 
     def __str__(self):
         return self.title
@@ -108,7 +136,8 @@ class Post(models.Model, HitCountMixin):
 class PostComment(models.Model):
     post = models.ForeignKey(
         'Post', verbose_name="Post Seç", related_name='post', on_delete=models.CASCADE)
-    title = models.CharField(max_length=200, verbose_name="Post Başlığı")
+    name = models.CharField(max_length=200, verbose_name="Adınız Soyadınız")
+    email = models.CharField(max_length=200, verbose_name="Email")
     detail = RichTextField(verbose_name="Yorum")
     created_at = models.DateTimeField(
         verbose_name="Oluşturulma Zamanı", auto_now_add=True)
@@ -116,7 +145,7 @@ class PostComment(models.Model):
         verbose_name="Onayla Göster", default=False)
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
         ordering = ['-created_at', 'id']

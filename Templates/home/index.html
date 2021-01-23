@@ -30,7 +30,8 @@ Anasayfa - {{block.super}}
                                 <li>Yazar: <a href="{% url 'posts:post_detail' slug=item.slug %}">{{item.author}}</a>
                                 </li>
                                 <li>{{item.created_at | timesince}}</li>
-                                <li><i class="fa fa-eye"></i> {% get_hit_count for item %}</li>
+                                <li><i class="fa fa-eye"></i> {% get_hit_count for item %} -{{hitcount.total_hits}}
+                                </li>
 
                             </ul>
                         </div>
@@ -43,17 +44,22 @@ Anasayfa - {{block.super}}
 </section>
 <!-- End top-images section -->
 
+
+
+{% for category in category_list %}
 <!-- fresh-section 
-			================================================== -->
+            ================================================== -->
+
+{% if category.post.count > 0 %}
 <section class="fresh-section">
     <div class="container">
         <div class="title-section text-center">
-            <h1>Fresh Stories</h1>
+            <h1>{{category.title}}</h1>
         </div>
         <div class="fresh-box owl-wrapper">
 
             <div class="owl-carousel" data-num="4">
-                {% for item in new_posts %}
+                {% for item in category.post.all %}
                 <div class="item">
                     <div class="news-post standard-post">
                         <div class="image-holder">
@@ -78,7 +84,13 @@ Anasayfa - {{block.super}}
         <div class="border-bottom"></div>
     </div>
 </section>
+{% endif %}
+
+
 <!-- End fresh section -->
+{% endfor %}
+
+
 
 <!-- trending-section 
 			================================================== -->
@@ -118,7 +130,7 @@ Anasayfa - {{block.super}}
                                             <li>{{item.created_at | timesince}}</li>
                                             <li><i class="fa fa-eye"></i> {% get_hit_count for item %}</li>
                                         </ul>
-                                        <p>{{item.description}}</p>
+                                        <p>{{item.detail| safe | truncatechars:300}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -201,10 +213,13 @@ Anasayfa - {{block.super}}
                             id="myVideo-{{item.id}}" style="display:none;">
 
                         </video>
-                        <a class="text-link" href="#">Food</a>
-                        <h2><a href="single-post.html">Aliquam tincidunt mauris eu risus.</a></h2>
+                        {% for category in item.categories.all %}
+                        <a class="text-link" href="/{{category.slug}}">{{category.title}}</a>
+                        {% endfor %}
+                        <h2><a class="fancybox" data-fancybox href="#myVideo-{{item.id}}">{{item.title}}</a></h2>
                         <ul class="post-tags">
-                            <li>3 days ago</li>
+                            <li>{{item.created_at | timesince}}</li>
+                            <li><i class="fa fa-eye"></i> {% get_hit_count for item %}</li>
                         </ul>
                     </div>
                 </div>
@@ -230,102 +245,33 @@ Anasayfa - {{block.super}}
                         <h1>Latest Posts</h1>
                     </div>
                     <div class="iso-call">
+                        {% for item in posts %}
                         <div class="item">
                             <div class="news-post article-post">
                                 <div class="image-holder">
-                                    <img src="upload/blog/m1.jpg" alt="">
+                                    <img src="/media/{{item.post_image}}" alt="{{item.title}}">
                                 </div>
-                                <a class="text-link" href="#">Food</a>
-                                <h2><a href="single-post.html">Nullam malesuada eratut turpis.</a></h2>
+                                {% for category in item.categories.all %}
+                                <a class="text-link" href="/{{category.slug}}">{{category.title}} </a>
+                                {% endfor %}
+                                <h2><a href="{% url 'posts:post_detail' slug=item.slug %}">{{item.title}}</a></h2>
                                 <ul class="post-tags">
-                                    <li>3 days ago</li>
-                                    <li><a href="#">3 comments</a></li>
-                                    <li>by <a href="#">John Smith</a></li>
+                                    <li>{{item.created_at | timesince}}</li>
+                                    <li><a href="{% url 'posts:post_detail' slug=item.slug %}">{{item.postcomment.count}}
+                                            comments</a></li>
+                                    <li>by <a href="{% url 'posts:post_detail' slug=item.slug %}">{{item.author}}</a>
+                                    </li>
+                                    <li><i class="fa fa-eye"></i> {% get_hit_count for item %}</li>
                                 </ul>
-                                <p>Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate
-                                    magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt ...</p>
+                                <p>{{item.detail| safe | truncatechars:300}}</p>
                             </div>
                         </div>
-                        <div class="item">
-                            <div class="news-post article-post">
-                                <div class="image-holder">
-                                    <img src="upload/blog/m2.jpg" alt="">
-                                </div>
-                                <a class="text-link" href="#">Travel</a>
-                                <h2><a href="single-post.html">Morbi in sem quisdui placerat ornare.</a></h2>
-                                <ul class="post-tags">
-                                    <li>3 days ago</li>
-                                    <li><a href="#">3 comments</a></li>
-                                    <li>by <a href="#">John Smith</a></li>
-                                </ul>
-                                <p>Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate
-                                    magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt ...</p>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="news-post article-post">
-                                <div class="image-holder">
-                                    <img src="upload/blog/m3.jpg" alt="">
-                                </div>
-                                <a class="text-link" href="#">Travel</a>
-                                <h2><a href="single-post.html">Morbi in sem quisdui placerat ornare.</a></h2>
-                                <ul class="post-tags">
-                                    <li>3 days ago</li>
-                                    <li><a href="#">3 comments</a></li>
-                                    <li>by <a href="#">John Smith</a></li>
-                                </ul>
-                                <p>Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate
-                                    magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt ...</p>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="news-post article-post">
-                                <div class="image-holder">
-                                    <img src="upload/blog/m4.jpg" alt="">
-                                </div>
-                                <a class="text-link" href="#">Lifestyle</a>
-                                <h2><a href="single-post.html">Cras iaculis ultricies nulla.</a></h2>
-                                <ul class="post-tags">
-                                    <li>3 days ago</li>
-                                    <li><a href="#">3 comments</a></li>
-                                    <li>by <a href="#">John Smith</a></li>
-                                </ul>
-                                <p>Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate
-                                    magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt ...</p>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="news-post image-post">
-                                <img src="upload/blog/m6.jpg" alt="">
-                                <div class="hover-post">
-                                    <a class="category-link" href="#">Travel</a>
-                                    <h2><a href="single-post.html">Aliquam erat volutpat.</a></h2>
-                                    <ul class="post-tags">
-                                        <li>3 days ago</li>
-                                        <li><a href="#">3 comments</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="news-post article-post">
-                                <div class="image-holder">
-                                    <img src="upload/blog/m5.jpg" alt="">
-                                </div>
-                                <a class="text-link" href="#">Lifestyle</a>
-                                <h2><a href="single-post.html">Cras iaculis ultricies nulla.</a></h2>
-                                <ul class="post-tags">
-                                    <li>3 days ago</li>
-                                    <li><a href="#">3 comments</a></li>
-                                    <li>by <a href="#">John Smith</a></li>
-                                </ul>
-                                <p>Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate
-                                    magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt ...</p>
-                            </div>
-                        </div>
+                        {% endfor %}
+
+
                     </div>
                     <div class="center-button">
-                        <a class="button-one" href="#">Load More</a>
+                        <a class="button-one" href="/posts">Tüm Postlar</a>
                     </div>
                 </div>
             </div>
@@ -365,7 +311,7 @@ Anasayfa - {{block.super}}
 
                                 <div class="item">
                                     <div class="news-post image-post">
-                                        <img src="upload/blog/m7.jpg" alt="">
+                                        <img src="/static/upload/blog/m7.jpg" alt="">
                                         <div class="hover-post overlay-bg">
                                             <div><a class="category-link" href="#">Travel</a></div>
                                             <h2><a href="single-post.html">Morbi in sem quidui placerat ornare.</a></h2>
@@ -379,7 +325,7 @@ Anasayfa - {{block.super}}
 
                                 <div class="item">
                                     <div class="news-post image-post">
-                                        <img src="upload/blog/m7.jpg" alt="">
+                                        <img src="/static/upload/blog/m7.jpg" alt="">
                                         <div class="hover-post overlay-bg">
                                             <div><a class="category-link" href="#">Travel</a></div>
                                             <h2><a href="single-post.html">Integer vitae libero ac risus egestas.</a>
@@ -435,24 +381,58 @@ Anasayfa - {{block.super}}
                         </ul>
                     </div>
 
+                    <div class="widget features-widget">
+                        <div class="owl-wrapper">
+                            <div class="owl-carousel" data-num="1">
+
+                                <div class="item">
+                                    <div class="news-post image-post">
+                                        <img src="/static/upload/blog/m7.jpg" alt="">
+                                        <div class="hover-post overlay-bg">
+                                            <div><a class="category-link" href="#">Travel</a></div>
+                                            <h2><a href="single-post.html">Morbi in sem quidui placerat ornare.</a></h2>
+                                            <ul class="post-tags">
+                                                <li><a href="#">3 comments</a></li>
+                                                <li>3 days ago</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="news-post image-post">
+                                        <img src="/static/upload/blog/m7.jpg" alt="">
+                                        <div class="hover-post overlay-bg">
+                                            <div><a class="category-link" href="#">Travel</a></div>
+                                            <h2><a href="single-post.html">Integer vitae libero ac risus egestas.</a>
+                                            </h2>
+                                            <ul class="post-tags">
+                                                <li><a href="#">3 comments</a></li>
+                                                <li>3 days ago</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+
                     <div class="widget category-widget">
                         <h2>Categories</h2>
                         <ul class="category-list">
+                            {% for item in category_list %}
                             <li>
-                                <a href="#">
-                                    Travel <span>24</span>
+                                <a href="/{{item.slug}}">
+                                    {{item.title}} <span>{{item.post.count}}</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="#">
-                                    Lifestyle <span>16</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Food <span>8</span>
-                                </a>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
 
@@ -463,8 +443,11 @@ Anasayfa - {{block.super}}
 </section>
 <!-- End blog section -->
 
+
+
+{% comment %}
 <!-- instagram section 
-			================================================== -->
+                        ================================================== -->
 <section class="instagram-section">
     <div class="container">
         <div class="border-top"></div>
@@ -489,4 +472,6 @@ Anasayfa - {{block.super}}
     </div>
 </section>
 <!-- End instagram section -->
+{% endcomment %}
+
 {% endblock %}

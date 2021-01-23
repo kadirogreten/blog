@@ -24,14 +24,24 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class PostCommentsAdmin(admin.ModelAdmin):
-    list_display = ['title', 'created_at']
-    list_display_link = ['title']
-    search_fields = ['title', ]
+    list_display = ['name', 'email', 'created_at']
+    list_display_link = ['name', 'email']
+    search_fields = ['name', 'email', ]
 
     class Meta:
         model = PostComment
 
 
+class PostTagsAdmin(admin.ModelAdmin):
+    list_display = ['title', 'created_at']
+    list_display_link = ['title', ]
+    search_fields = ['title', ]
+
+    class Meta:
+        model = PostTags
+
+
 admin.site.register(PostCategory, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(PostComment, PostCommentsAdmin)
+admin.site.register(PostTags, PostTagsAdmin)

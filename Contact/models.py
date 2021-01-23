@@ -16,3 +16,12 @@ class Contact(models.Model):
     class Meta:
         ordering = ['-message_date', 'id']
         verbose_name_plural = "İletişim"
+
+
+class Newsletter(models.Model):
+    email = models.EmailField()
+    message_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-message_date', 'id']
+        verbose_name_plural = "Bültenimize Katılın"
