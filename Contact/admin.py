@@ -23,3 +23,4 @@ class NewsletterAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Newsletter, NewsletterAdmin)
+admin.site.register(Contact, ContactAdmin)

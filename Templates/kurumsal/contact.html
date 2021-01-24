@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load hitcount_tags %}
+{% block title %}
+İletişim - {{block.super}}
+{% endblock %}
+
+{% block body %}
+
+{% include 'messages.html' %}
+<!-- blog section 
+                    ================================================== -->
+
+<script src="https://www.google.com/recaptcha/api.js?render={{site_key}}"></script>
+<script>
+	/*global grecaptcha*/
+	grecaptcha.ready(function () {
+		grecaptcha.execute('{{site_key}}', { action: "/contact/" }).then(function (token) {
+			document.getElementById('g-recaptcha-response').value = token;
+		});
+	});
+</script>
+
+<!-- page-banner section 
+			================================================== -->
+<section class="page-banner-section">
+	<div class="container">
+		<h1>İletişim</h1>
+	</div>
+</section>
+<!-- End page-banner section -->
+
+<!-- contact section 
+			================================================== -->
+<section class="contact-section">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-10 offset-xl-1 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-sm-12">
+				<div class="contact-box">
+					{% comment %}
+					<div id="map"></div>
+					{% endcomment %}
+
+					<p>Tüm sorularınız için iletişime geçebilirsiniz...</p>
+					<form id="contact-form">
+						<div class="row">
+							<div class="col-md-6">
+								{{form.name_surname}}
+							</div>
+							<div class="col-md-6">
+								{{form.email}}
+							</div>
+						</div>
+						<div>
+							<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+						</div>
+						<textarea name="{{form.message.name}}" id="{{form.detail.name}}" placeholder="Mesaj"></textarea>
+						<div>
+							<input type="submit" value="Submit">
+							<div id="msg" class="message"></div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
+<!-- End contact section -->
+
+{% endblock %}

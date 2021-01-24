@@ -5,10 +5,13 @@ from hitcount.views import HitCountDetailView
 import hitcount  # import entire package
 from hitcount.models import HitCount
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.conf import settings
 
-from .forms import NewsletterForm
+from .forms import NewsletterForm, CommetForm
 
 from django.contrib import messages
+
+import requests
 
 # class PostDetailView(HitCountDetailView):
 #     model = Post
@@ -91,8 +94,31 @@ def post_detail(request, slug):
 
     post_comments = PostComment.objects.filter(post=post)
 
-    print(post_views)
-    print(post)
+    commet_form = CommetForm(request.POST or None)
+    if request.method == 'POST':
+
+        if commet_form.is_valid():
+            data = {
+                'response': request.POST.get('g-recaptcha-response'),
+                'secret': settings.RECAPTCHA_PRIVATE_KEY
+            }
+            resp = requests.post(
+                'https://www.google.com/recaptcha/api/siteverify', data=data)
+            result_json = resp.json()
+            if result_json.get('success'):
+                print('girdim')
+                commet_form.post = post
+                commet = commet_form.save()
+                messages.success(
+                    request, 'Yorumunuz başarılı bir şekilde iletildi!')
+                return HttpResponseRedirect(commet.post.get_absolute_url())
+            else:
+                messages.error(
+                    request, "Captcha Hatalı")
+        else:
+            messages.error(
+                request, "Lütfen boş alanları doldurunuz! Ya da captcha işaretleyiniz")
+
     if not post.title:
         return render(request, 'post/404.html', {})
     # print(all_fields)
@@ -100,7 +126,10 @@ def post_detail(request, slug):
         'categories': post.categories,
         'post': post,
         'post_views': post_views,
-        'post_comments': post_comments
+        'post_comments': post_comments,
+        'form': commet_form,
+        'site_key': settings.RECAPTCHA_PUBLIC_KEY
+
 
     }
     return render(request, 'post/post_detail.html', context)
