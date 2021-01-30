@@ -16,9 +16,11 @@ django-js-asset==1.2.2
 django-recaptcha==2.0.6
 django-recaptcha3==0.4.0
 filelock==3.0.12
+gunicorn==20.0.4
 idna==2.10
 iyzipay==1.0.32
 Pillow==7.1.2
+psycopg2==2.8.6
 pycodestyle==2.5.0
 pytz==2019.3
 requests==2.25.1
