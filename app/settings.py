@@ -99,8 +99,12 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'meysa_db'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'meysa_db',
+        'USER': 'kadir',
+        'PASSWORD': 'Kadir123',
+        'HOST': '68.183.26.107',
+        'PORT': '5432'
     }
 }
 
