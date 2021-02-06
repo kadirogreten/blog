@@ -99,15 +99,14 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'meysa_db',
-        'USER': 'kadir',
-        'PASSWORD': 'Kadir123',
-        'HOST': '68.183.26.107',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'defaultdb',
+        'USER': 'doadmin',
+        'PASSWORD': 'b2ce3woomhitqsb5',
+        'HOST': 'db-meysa-do-user-8170139-0.b.db.ondigitalocean.com',
+        'PORT': 25060
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
