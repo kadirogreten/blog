@@ -44,6 +44,7 @@
 
 					<p>Tüm sorularınız için iletişime geçebilirsiniz...</p>
 					<form id="contact-form">
+						{% csrf_token %}
 						<div class="row">
 							<div class="col-md-6">
 								{{form.name_surname}}
@@ -57,7 +58,7 @@
 						</div>
 						<textarea name="{{form.message.name}}" id="{{form.detail.name}}" placeholder="Mesaj"></textarea>
 						<div>
-							<input type="submit" value="Submit">
+							<input type="submit" value="Gönder">
 							<div id="msg" class="message"></div>
 					</form>
 				</div>
