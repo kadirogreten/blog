@@ -26,7 +26,7 @@ SECRET_KEY = 'n1wbx8wdoc07_^8@ja-um#abpf^@jsjb1adf$kl8+q3@==(v0l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*', '68.183.26.107']
+ALLOWED_HOSTS = ['*', '68.183.26.107', 'meysaeylul.com', 'www.meysaeylul.com']
 
 
 # Application definition
@@ -99,8 +99,17 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'weezstudio_meysa',
+        'ENGINE': 'sql_server.pyodbc',
+        'PORT': 1433,
+        'HOST': 'plesk.mtntescil.net',
+        'USER': 'weezstudio_user',
+        'PASSWORD': '89892dbC.WeezStudio',
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'MARS_Connection': 'True'
+
+        }
     }
 }
 
