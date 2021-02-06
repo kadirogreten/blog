@@ -99,17 +99,8 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'weezstudio_meysa',
-        'ENGINE': 'sql_server.pyodbc',
-        'PORT': 1433,
-        'HOST': 'plesk.mtntescil.net',
-        'USER': 'weezstudio_user',
-        'PASSWORD': '89892dbC.WeezStudio',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-            'MARS_Connection': 'True'
-
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'meysa_db'),
     }
 }
 
