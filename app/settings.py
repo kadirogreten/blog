@@ -100,11 +100,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'defaultdb',
-        'USER': 'doadmin',
-        'PASSWORD': 'b2ce3woomhitqsb5',
-        'HOST': 'db-meysa-do-user-8170139-0.b.db.ondigitalocean.com',
-        'PORT': 25060
+        'NAME': 'defaultdb'  
     }
 }
 
